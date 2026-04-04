@@ -8,22 +8,30 @@
 struct VS_INPUT
 {
     //POSITION, COLOR : SemanticName ->  InputLayout에 넘겨줘야 할 정보
-    float4 position : POSITION; 
-    float4 color : COLOR;
+    float4 position : POSITION;
+    float2 uv : TEXCOORD;
+    //float4 color : COLOR;
 };
 
 struct VS_OUTPUT
 {
     float4 position : SV_POSITION;
-    float4 color : COLOR;
+    float2 uv : TEXCOORD;
+    //float4 color : COLOR;
 };
+
+//t0 레지스터에 gpu 메모리에 있는 이미지 데이터를 사용하겠다는 의미
+Texture2D texture0 : register(t0);
+// s0 레지스터에 이미지 데이터를 어떻게 읽을 것인지를 등록
+SamplerState sampler0 : register(s0);
 
 VS_OUTPUT VS(VS_INPUT input)
 {
     //원래 행렬을 이용한 계산이 필요하지만 일단은 그대로 토스
     VS_OUTPUT output;
     output.position = input.position;
-    output.color = input.color;
+    output.uv = input.uv;
+    //output.color = input.color;
     
     return output;
 }
@@ -36,5 +44,7 @@ VS_OUTPUT VS(VS_INPUT input)
 
 float4 PS(VS_OUTPUT input) : SV_TARGET
 {
-    return input.color; // 일단 빨간색으로 처리
+    float4 color = texture0.Sample(sampler0, input.uv);
+    
+    return color;
 }

@@ -25,6 +25,7 @@ public:
 	void LoadShaderFromFile(const wstring& path, const string& name, const string& version, ComPtr<ID3DBlob>& blob);
 	void CreateVS();
 	void CreatePS();
+	void CreateSRV();
 private:
 	HWND _hwnd;
 	uint32 _width = 0;
@@ -37,8 +38,13 @@ private:
 private:
 	//Geometry
 	vector<Vertex> _vertices;
+	vector<uint32> _indices;
 	ComPtr<ID3D11Buffer> _vertexBuffer = nullptr;
+	ComPtr<ID3D11Buffer> _indexBuffer = nullptr;
 	ComPtr<ID3D11InputLayout> _inputLayout = nullptr;
+	
+	//SRV
+	ComPtr<ID3D11ShaderResourceView> _shaderResourceView = nullptr;
 
 	ComPtr<ID3D11VertexShader> _vertexShader = nullptr;
 	ComPtr<ID3DBlob> _vsBlob = nullptr;

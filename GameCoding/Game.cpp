@@ -26,6 +26,7 @@ void Game::Init(HWND hwnd)
 	CreateVS();
 	CreateInputLayout();
 	CreatePS();
+	CreateSRV();
 }
 
 void Game::Update()
@@ -42,6 +43,7 @@ void Game::Render()
 
 	//IA
 	_deviceContext->IASetVertexBuffers(0, 1, _vertexBuffer.GetAddressOf(), &stride, &offset);
+	_deviceContext->IASetIndexBuffer(_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	_deviceContext->IASetInputLayout(_inputLayout.Get());
 	_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 그리는 방식
 
@@ -50,9 +52,12 @@ void Game::Render()
 
 	//PS
 	_deviceContext->PSSetShader(_pixelShader.Get(), nullptr, 0);
+	_deviceContext->PSSetShaderResources(0, 1, _shaderResourceView.GetAddressOf());
 
 	//OM
-	_deviceContext->Draw(_vertices.size(), 0);
+	//_deviceContext->Draw(_vertices.size(), 0);
+	//인덱스를 추가해줘서 그리기 방법이 바뀜.
+	_deviceContext->DrawIndexed(_indices.size(), 0, 0);
 
 	RenderEnd();
 }
@@ -153,16 +158,28 @@ void Game::RenderEnd()
 void Game::CreateGeometry()
 {
 	//정점 정보 기입
-	_vertices.resize(3);
+	/*
+		VertexData
+		1 3
+		0 2
+	*/
+	_vertices.resize(4);
 
 	_vertices[0].position = Vec3(-0.5f, -0.5f, 0.f);
-	_vertices[0].color = Color(1.f, 0.f, 0.f, 1.f);
+	_vertices[0].uv = Vec2(0.f, 1.f);
+	//_vertices[0].color = Color(1.f, 0.f, 0.f, 1.f);
 
-	_vertices[1].position = Vec3(0.f, 0.5f, 0.f);
-	_vertices[1].color = Color(0.f, 1.f, 0.f, 1.f);
+	_vertices[1].position = Vec3(-0.5f, 0.5f, 0.f);
+	_vertices[1].uv = Vec2(0.f, 0.f);
+	//_vertices[1].color = Color(1.f, 0.f, 0.f, 1.f);
 
 	_vertices[2].position = Vec3(0.5f, -0.5f, 0.f);
-	_vertices[2].color = Color(0.f, 0.f, 1.f, 1.f);
+	_vertices[2].uv = Vec2(1.f, 1.f);
+	//_vertices[2].color = Color(0.f, 0.f, 1.f, 1.f);
+
+	_vertices[3].position = Vec3(0.5f, 0.5f, 0.f);
+	_vertices[3].uv = Vec2(1.f, 0.f);
+	//_vertices[3].color = Color(0.f, 1.f, 0.f, 1.f);
 
 	//정점 정보를 gpu에 넘겨줘야 한다. => 버퍼 디스크립션 작성
 	D3D11_BUFFER_DESC desc;
@@ -181,7 +198,25 @@ void Game::CreateGeometry()
 	data.pSysMem = _vertices.data();
 
 	//gpu쪽에서 해당 정보를 전부 가지고 있는 버퍼를 생성
-	_device->CreateBuffer(&desc, &data, _vertexBuffer.GetAddressOf());
+	HRESULT hr = _device->CreateBuffer(&desc, &data, _vertexBuffer.GetAddressOf());
+	CHECK(hr);
+
+	//인덱스 정보 기입
+	_indices = { 0,1,2,2,1,3 };
+
+	//D3D11_BUFFER_DESC desc;
+	//인덱스용으로 쓰기 위해서 flush하고 다시 사용
+	ZeroMemory(&desc, sizeof(desc));
+	desc.Usage = D3D11_USAGE_IMMUTABLE;
+	desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	desc.ByteWidth = (uint32)(sizeof(uint32) * _indices.size());
+
+	//D3D11_SUBRESOURCE_DATA data;
+	ZeroMemory(&data, sizeof(data));
+	data.pSysMem = _indices.data();
+
+	hr = _device->CreateBuffer(&desc, &data, _indexBuffer.GetAddressOf());
+	CHECK(hr);
 }
 
 void Game::CreateInputLayout()
@@ -192,7 +227,7 @@ void Game::CreateInputLayout()
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0
 		},
 		{//D3D11_APPEND_ALIGNED_ELEMENT는 구조의 크기를 자동으로 계산하는 매크로
-			"COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, /*D3D11_APPEND_ALIGNED_ELEMENT*/ 12, D3D11_INPUT_PER_VERTEX_DATA, 0
+			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, /*D3D11_APPEND_ALIGNED_ELEMENT*/ 12, D3D11_INPUT_PER_VERTEX_DATA, 0
 		},
 	};
 
@@ -248,6 +283,17 @@ void Game::CreatePS()
 		_pixelShader.GetAddressOf()
 	);
 
+	CHECK(hr);
+}
+
+void Game::CreateSRV()
+{
+	DirectX::TexMetadata md;
+	DirectX::ScratchImage img;
+	HRESULT hr = LoadFromWICFile(L"Images/Ocean.png", WIC_FLAGS_NONE, &md, img);
+	CHECK(hr);
+
+	hr = CreateShaderResourceView(_device.Get(), img.GetImages(), img.GetImageCount(), md, _shaderResourceView.GetAddressOf());
 	CHECK(hr);
 }
 
