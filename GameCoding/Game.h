@@ -26,6 +26,15 @@ public:
 	void CreateVS();
 	void CreatePS();
 	void CreateSRV();
+
+	//이동 정보를 담을 상수 데이터 생성
+	void CreateConstantBuffer();
+
+	//레스터라이저 생성
+	void CreateRasterizerState();
+	void CreateSamplerState();
+	void CreateBlendState();
+
 private:
 	HWND _hwnd;
 	uint32 _width = 0;
@@ -51,6 +60,16 @@ private:
 
 	ComPtr<ID3D11PixelShader> _pixelShader = nullptr;
 	ComPtr<ID3DBlob> _psBlob = nullptr;
+
+	//CBuffer
+	TransformData _transformData;
+	ComPtr<ID3D11Buffer> _constantBuffer;
+
+	//Rasterizer
+	ComPtr<ID3D11RasterizerState> _rasterizerState = nullptr;
+	//SamplerState
+	ComPtr<ID3D11SamplerState> _samplerState = nullptr;
+	ComPtr<ID3D11BlendState> _blendState = nullptr;
 
 private:
 	ComPtr<ID3D11Device> _device = nullptr;

@@ -27,18 +27,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
-      <Filter>소스 파일\99.Headers\Andromeda</Filter>
-    </ClInclude>
-    <ClInclude Include="framework.h">
-      <Filter>소스 파일\99.Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>소스 파일\99.Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>소스 파일\99.Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Types.h">
       <Filter>소스 파일\99.Headers</Filter>
     </ClInclude>
@@ -52,6 +40,18 @@
       <Filter>소스 파일\99.Headers</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
+      <Filter>소스 파일\99.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>소스 파일\99.Headers\Andromeda</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>소스 파일\99.Headers\Andromeda</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>소스 파일\99.Headers\Andromeda</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
       <Filter>소스 파일\99.Headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -72,11 +72,11 @@
     <ClCompile Include="GameCoding.cpp">
       <Filter>소스 파일\1.Main</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>소스 파일\99.Headers\Andromeda</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>소스 파일\1.Main</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>소스 파일\99.Headers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

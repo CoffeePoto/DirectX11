@@ -15,6 +15,9 @@ void Game::Init(HWND hwnd)
 	_width = GWinSizeX;
 	_height = GWinSizeY;
 
+	//dx 장치의 생성 순서는 렌더링 파이프라인의 순서에 엄격히 의존하지 않는다.
+	//렌더링 파이프라인 과정과 생성 순서가 조금 뒤바뀌어도 괜찮다.
+
 	//장치&스왑체인 생성, 뷰포트 설정
 	CreateDeviceAndSwapChain();
 	CreateRenderTargetView();
@@ -27,10 +30,29 @@ void Game::Init(HWND hwnd)
 	CreateInputLayout();
 	CreatePS();
 	CreateSRV();
+	CreateConstantBuffer();
+
+	//레스터라이저 설정
+	CreateRasterizerState();
+	CreateSamplerState();
 }
 
 void Game::Update()
 {
+	//_transformData.offset.x = 0.5f;
+	//_transformData.offset.y = 0.5f;
+
+	//물체 이동 시 변하는 위치 값을 받기 위함
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	ZeroMemory(&subResource, sizeof(subResource));
+
+	//D3D11_MAP_WRITE_DISCARD : 기존 버퍼 내용을 덮어쓰겠다는 의미
+	_deviceContext->Map(_constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+
+	//transformData의 값을 subresource에 복사
+	memcpy(subResource.pData, &_transformData, sizeof(_transformData));
+
+	_deviceContext->Unmap(_constantBuffer.Get(), 0);
 }
 
 void Game::Render()
@@ -49,15 +71,21 @@ void Game::Render()
 
 	//VS
 	_deviceContext->VSSetShader(_vertexShader.Get(), nullptr, 0);
+	_deviceContext->VSSetConstantBuffers(0, 1, _constantBuffer.GetAddressOf()); //상수 버퍼 세팅
+
+	//RS
+	_deviceContext->RSSetState(_rasterizerState.Get()); // 레스터라이저 바인딩
 
 	//PS
 	_deviceContext->PSSetShader(_pixelShader.Get(), nullptr, 0);
 	_deviceContext->PSSetShaderResources(0, 1, _shaderResourceView.GetAddressOf());
+	_deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
 
 	//OM
 	//_deviceContext->Draw(_vertices.size(), 0);
 	//인덱스를 추가해줘서 그리기 방법이 바뀜.
 	_deviceContext->DrawIndexed(_indices.size(), 0, 0);
+	_deviceContext->OMSetBlendState(_blendState.Get(), nullptr, 0xFFFFFFFF);
 
 	RenderEnd();
 }
@@ -166,7 +194,7 @@ void Game::CreateGeometry()
 	_vertices.resize(4);
 
 	_vertices[0].position = Vec3(-0.5f, -0.5f, 0.f);
-	_vertices[0].uv = Vec2(0.f, 1.f);
+	_vertices[0].uv = Vec2(0.f, 2.f);
 	//_vertices[0].color = Color(1.f, 0.f, 0.f, 1.f);
 
 	_vertices[1].position = Vec3(-0.5f, 0.5f, 0.f);
@@ -174,11 +202,11 @@ void Game::CreateGeometry()
 	//_vertices[1].color = Color(1.f, 0.f, 0.f, 1.f);
 
 	_vertices[2].position = Vec3(0.5f, -0.5f, 0.f);
-	_vertices[2].uv = Vec2(1.f, 1.f);
+	_vertices[2].uv = Vec2(2.f, 2.f);
 	//_vertices[2].color = Color(0.f, 0.f, 1.f, 1.f);
 
 	_vertices[3].position = Vec3(0.5f, 0.5f, 0.f);
-	_vertices[3].uv = Vec2(1.f, 0.f);
+	_vertices[3].uv = Vec2(2.f, 0.f);
 	//_vertices[3].color = Color(0.f, 1.f, 0.f, 1.f);
 
 	//정점 정보를 gpu에 넘겨줘야 한다. => 버퍼 디스크립션 작성
@@ -227,6 +255,7 @@ void Game::CreateInputLayout()
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0
 		},
 		{//D3D11_APPEND_ALIGNED_ELEMENT는 구조의 크기를 자동으로 계산하는 매크로
+			// position의 크기 이후부터 작성 시작(position이 4바이트 float 3개로 이루어져 있으므로, 12부터 시작
 			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, /*D3D11_APPEND_ALIGNED_ELEMENT*/ 12, D3D11_INPUT_PER_VERTEX_DATA, 0
 		},
 	};
@@ -290,10 +319,99 @@ void Game::CreateSRV()
 {
 	DirectX::TexMetadata md;
 	DirectX::ScratchImage img;
-	HRESULT hr = LoadFromWICFile(L"Images/Ocean.png", WIC_FLAGS_NONE, &md, img);
+	HRESULT hr = LoadFromWICFile(L"Images/Ocean.jpg", WIC_FLAGS_NONE, &md, img);
 	CHECK(hr);
 
 	hr = CreateShaderResourceView(_device.Get(), img.GetImages(), img.GetImageCount(), md, _shaderResourceView.GetAddressOf());
+	CHECK(hr);
+}
+
+void Game::CreateConstantBuffer()
+{
+	D3D11_BUFFER_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	desc.Usage = D3D11_USAGE_DYNAMIC; // CPU Write + GPU Read
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	desc.ByteWidth = sizeof(TransformData);
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	HRESULT hr = _device->CreateBuffer(&desc, nullptr, _constantBuffer.GetAddressOf());
+	CHECK(hr);
+}
+
+void Game::CreateRasterizerState()
+{
+	D3D11_RASTERIZER_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	/*
+		FillMode : 어떻게 채울 것인가.
+		WIREFRAME : 물체의 삼각형 프레임을 출력
+		SOLID : 물체의 색상을 채워서 출력
+	*/
+	desc.FillMode = D3D11_FILL_SOLID;
+	/*
+		CullMode : 어떻게 자를 것인가. 어떤 기준으로 물체가 뒤에 있음을 판단할 것인가.(or 카메라 밖에 있거나)
+		NONE : 카메라 범위 내에 있으면 전부 출력
+		BACK : 물체 뒤에 있으면 출력하지 않음
+		FRONT : 물체 앞에 있으면 출력하지 않음
+	*/
+	desc.CullMode = D3D11_CULL_BACK;
+	/*
+		FrontCounterClockwise : 삼각형 그리는 방향이 반시계인가, 시계인가에 따라 앞면, 후면임을 판단하는 기준
+		true : 시계방향으로 그리면 앞면으로 판단
+		false : 반시계방향으로 그리면 앞면으로 판단
+	*/
+	desc.FrontCounterClockwise = false;
+
+	HRESULT hr = _device->CreateRasterizerState(&desc, _rasterizerState.GetAddressOf());
+	CHECK(hr);
+}
+
+void Game::CreateSamplerState()
+{
+	D3D11_SAMPLER_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+
+	//samplerstate 설정
+	desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+	desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+	//RGBA 순서
+	desc.BorderColor[0] = 0;
+	desc.BorderColor[1] = 0;
+	desc.BorderColor[2] = 0;
+	desc.BorderColor[3] = 1;
+	//여기는 나중에
+	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	desc.MaxAnisotropy = 16;
+	desc.MaxLOD = FLT_MAX;
+	desc.MinLOD - FLT_MIN;
+	desc.MipLODBias = 0.0f;
+
+	_device->CreateSamplerState(&desc, _samplerState.GetAddressOf());
+}
+
+void Game::CreateBlendState()
+{
+	D3D11_BLEND_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	
+	//알파값에 따라 어떻게 색상을 섞을지를 결정하는 단계
+	//반투명 상태 시 어떻게 처리할지를 결정하는건데, 비교적 덜 중요
+	desc.AlphaToCoverageEnable = false;
+	desc.IndependentBlendEnable = false;
+
+	desc.RenderTarget[0].BlendEnable = true;
+	desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	HRESULT hr = _device->CreateBlendState(&desc, _blendState.GetAddressOf());
 	CHECK(hr);
 }
 

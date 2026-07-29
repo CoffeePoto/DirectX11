@@ -95,7 +95,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    RECT windowRect = { 0, 0, GWinSizeX, GWinSizeY };
    AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, false);
 
-   hWnd = CreateWindowW(L"GameCoding", L"Client", WS_OVERLAPPEDWINDOW,
+   hWnd = CreateWindowW(L"GameCoding", L"DirectX", WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
