@@ -1,0 +1,23 @@
+#include "pch.h"
+#include "VertexData.h"
+
+vector<D3D11_INPUT_ELEMENT_DESC> VertexTextureData::descs
+{
+	{
+		"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0
+	},
+	{//D3D11_APPEND_ALIGNED_ELEMENT는 구조의 크기를 자동으로 계산하는 매크로
+		// position의 크기 이후부터 작성 시작(position이 4바이트 float 3개로 이루어져 있으므로, 12부터 시작
+		"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0
+	}
+};
+
+vector<D3D11_INPUT_ELEMENT_DESC> VertexColorData::descs
+{
+	{
+		"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0
+	},
+	{
+		"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0
+	}
+};

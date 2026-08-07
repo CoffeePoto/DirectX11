@@ -25,6 +25,33 @@
     <Filter Include="소스 파일\98.Shaders">
       <UniqueIdentifier>{058dfe49-939d-4df7-bcb3-af980444e6df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\99.Headers\Utils">
+      <UniqueIdentifier>{95bb56aa-8131-421e-9aa6-8a665862a9c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00.Engine">
+      <UniqueIdentifier>{83dc508a-6d8d-4230-a8ce-19ee6937e2b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00.Engine\Pipeline">
+      <UniqueIdentifier>{44325dbc-1904-451b-9ed7-1312f8ea5391}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00.Engine\Pipeline\00. Geometry">
+      <UniqueIdentifier>{283e608b-6e58-4d31-b67f-3af8e1fe59f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00.Engine\Pipeline\01. InputAssembler">
+      <UniqueIdentifier>{f3489c9d-f147-489d-933d-a1a84c16f695}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00.Engine\Pipeline\02. VertexShader">
+      <UniqueIdentifier>{be4f0ddd-d3e5-474e-9d87-29fdb6f7a85f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00.Engine\Pipeline\03. Rasterizer">
+      <UniqueIdentifier>{1605fe09-22b8-4ce2-bf75-7a94c3813971}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00.Engine\Pipeline\04. PixelShader">
+      <UniqueIdentifier>{48bbfadd-9274-4fc8-8864-cb8591753d5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00.Engine\Pipeline\05. OutputMerger">
+      <UniqueIdentifier>{1295f9d0-5019-470b-adad-8aa07276eddb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Types.h">
@@ -54,6 +81,39 @@
     <ClInclude Include="pch.h">
       <Filter>소스 파일\99.Headers</Filter>
     </ClInclude>
+    <ClInclude Include="SimpleMath.h">
+      <Filter>소스 파일\99.Headers\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>소스 파일\00.Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>소스 파일\00.Engine\Pipeline\01. InputAssembler</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>소스 파일\00.Engine\Pipeline\01. InputAssembler</Filter>
+    </ClInclude>
+    <ClInclude Include="InputLayout.h">
+      <Filter>소스 파일\00.Engine\Pipeline\01. InputAssembler</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>소스 파일\00.Engine\Pipeline\00. Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryHelper.h">
+      <Filter>소스 파일\00.Engine\Pipeline\00. Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexData.h">
+      <Filter>소스 파일\00.Engine\Pipeline\00. Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>소스 파일\00.Engine\Pipeline\02. VertexShader</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>소스 파일\00.Engine\Pipeline\02. VertexShader</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>소스 파일\00.Engine\Pipeline\04. PixelShader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameCoding.rc">
@@ -78,10 +138,48 @@
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일\99.Headers</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleMath.cpp">
+      <Filter>소스 파일\99.Headers\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>소스 파일\00.Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline\01. InputAssembler</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBuffer.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline\01. InputAssembler</Filter>
+    </ClCompile>
+    <ClCompile Include="InputLayout.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline\01. InputAssembler</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline\00. Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryHelper.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline\00. Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexData.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline\00. Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline\02. VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffer.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline\02. VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline\04. PixelShader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Default.hlsl">
       <Filter>소스 파일\98.Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl">
+      <Filter>소스 파일\99.Headers\Utils</Filter>
+    </None>
   </ItemGroup>
 </Project>

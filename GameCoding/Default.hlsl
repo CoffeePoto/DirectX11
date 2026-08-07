@@ -29,16 +29,22 @@ SamplerState sampler0 : register(s0);
 // cbuffer : GPU에서 사용할 상수 데이터를 담는 구조체
 cbuffer TransformData : register(b0)
 {
-    float4 offset;
+    row_major matrix matWorld;
+    row_major matrix matView;
+    row_major matrix matProjection;
 }
 
 VS_OUTPUT VS(VS_INPUT input)
 {
-    //원래 행렬을 이용한 계산이 필요하지만 일단은 그대로 토스
     VS_OUTPUT output;
-    output.position = input.position + offset;
+    
+    //WVP
+    float4 position = mul(input.position, matWorld); // World
+    position = mul(position, matView); // View
+    position = mul(position, matProjection); // Projection
+    
+    output.position = position;
     output.uv = input.uv;
-    //output.color = input.color;
     
     return output;
 }

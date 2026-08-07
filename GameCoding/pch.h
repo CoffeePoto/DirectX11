@@ -20,6 +20,7 @@
 #include <list>
 #include <map>
 #include <unordered_map>
+#include <memory>
 using namespace std;
 
 //WIN
@@ -38,3 +39,15 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 #define CHECK(p) assert(SUCCEEDED(p))
+
+//Engine
+#include "Graphics.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "InputLayout.h"
+#include "Geometry.h"
+#include "GeometryHelper.h"
+#include "VertexData.h"
+#include "Shader.h"
+#include "ConstantBuffer.h"
+#include "Texture.h"
