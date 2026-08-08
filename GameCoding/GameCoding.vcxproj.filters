@@ -84,9 +84,6 @@
     <ClInclude Include="SimpleMath.h">
       <Filter>소스 파일\99.Headers\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics.h">
-      <Filter>소스 파일\00.Engine</Filter>
-    </ClInclude>
     <ClInclude Include="VertexBuffer.h">
       <Filter>소스 파일\00.Engine\Pipeline\01. InputAssembler</Filter>
     </ClInclude>
@@ -113,6 +110,21 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>소스 파일\00.Engine\Pipeline\04. PixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="RasterizerState.h">
+      <Filter>소스 파일\00.Engine\Pipeline\03. Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="SamplerState.h">
+      <Filter>소스 파일\00.Engine\Pipeline\04. PixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendState.h">
+      <Filter>소스 파일\00.Engine\Pipeline\05. OutputMerger</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipeline.h">
+      <Filter>소스 파일\00.Engine\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>소스 파일\00.Engine\Pipeline</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -141,9 +153,6 @@
     <ClCompile Include="SimpleMath.cpp">
       <Filter>소스 파일\99.Headers\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics.cpp">
-      <Filter>소스 파일\00.Engine</Filter>
-    </ClCompile>
     <ClCompile Include="VertexBuffer.cpp">
       <Filter>소스 파일\00.Engine\Pipeline\01. InputAssembler</Filter>
     </ClCompile>
@@ -170,6 +179,21 @@
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>소스 파일\00.Engine\Pipeline\04. PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="RasterizerState.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline\03. Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="SamplerState.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline\04. PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="BlendState.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline\05. OutputMerger</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipeline.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>소스 파일\00.Engine\Pipeline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

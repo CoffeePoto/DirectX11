@@ -22,6 +22,7 @@ private:
 
 	//Engine
 	shared_ptr<Graphics> _graphics;
+	shared_ptr<Pipeline> _pipeline;
 
 	//Geometry
 	shared_ptr<Geometry<VertexTextureData>> _geometry;
@@ -41,13 +42,13 @@ private:
 	Vec3 _localScale = { 1.0f, 1.0f, 1.0f };
 
 	//Rasterizer
-	ComPtr<ID3D11RasterizerState> _rasterizerState = nullptr;
+	shared_ptr<RasterizerState> _rasterizerState;
 
 	//PS
 	shared_ptr<PixelShader> _pixelShader;
 	shared_ptr<Texture> _texture1;
 
 	//SamplerState
-	ComPtr<ID3D11SamplerState> _samplerState = nullptr;
-	ComPtr<ID3D11BlendState> _blendState = nullptr;
+	shared_ptr<SamplerState> _samplerState;
+	shared_ptr<BlendState> _blendState;
 };
