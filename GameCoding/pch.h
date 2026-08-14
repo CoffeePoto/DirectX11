@@ -15,12 +15,12 @@
 #include "Struct.h"
 
 //STL
-#include <string>
+#include <memory>
+#include <iostream>
 #include <vector>
 #include <list>
 #include <map>
 #include <unordered_map>
-#include <memory>
 using namespace std;
 
 //WIN
@@ -55,3 +55,4 @@ using namespace Microsoft::WRL;
 #include "SamplerState.h"
 #include "BlendState.h"
 #include "Pipeline.h"
+#include "Transform.h"
