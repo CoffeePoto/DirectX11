@@ -2,6 +2,7 @@
 #include "Transform.h"
 
 Transform::Transform()
+	: Super(ComponentType::Transform)
 {
 }
 
@@ -9,7 +10,7 @@ Transform::~Transform()
 {
 }
 
-void Transform::Init()
+void Transform::Awake()
 {
 }
 
@@ -61,12 +62,6 @@ void Transform::UpdateTransform()
 	Quaternion quat;
 	_matWorld.Decompose(_scale, quat, _position);
 	_rotation = ToEulerAngles(quat);
-
-	_right = Vec3::TransformNormal(Vec3::Right, _matWorld);
-	_up = Vec3::TransformNormal(Vec3::Up, _matWorld);
-	//왼손좌표계 기준은 맞는 것 같은데
-	//Forward, Backward 방향만 반대로 되어있음.
-	_look = Vec3::TransformNormal(Vec3::Backward, _matWorld);
 
 	//Children
 	for (const shared_ptr<Transform>& child : _children)
