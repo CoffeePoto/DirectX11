@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Game.h"
 #include "Camera.h"
+#include "MeshRenderer.h"
 
 Game::Game()
 {
@@ -22,6 +23,8 @@ void Game::Init(HWND hwnd)
 	_monster = make_shared<GameObject>(_graphics->GetDevice(), _graphics->GetDeviceContext());
 	{
 		_monster->GetorAddTransform();
+		_monster->AddComponent(make_shared<MeshRenderer>(_graphics->GetDevice(), _graphics->GetDeviceContext()));
+		_monster->GetTransform()->SetScale(Vec3(100.f, 100.0f, 1.f));
 		// ..
 	}
 
@@ -35,6 +38,7 @@ void Game::Init(HWND hwnd)
 void Game::Update()
 {
 	_monster->Update();
+
 	_camera->Update();
 }
 
@@ -42,7 +46,8 @@ void Game::Render()
 {
 	_graphics->RenderBegin();
 
-	_monster->Render(_pipeline);
+	//TEMP
+	_monster->GetMeshRenderer()->Render(_pipeline);
 
 	_graphics->RenderEnd();
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 class GameObject;
+class Transform;
 
 enum class ComponentType : uint8
 {

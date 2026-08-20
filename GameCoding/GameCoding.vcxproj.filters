@@ -156,6 +156,9 @@
     <ClInclude Include="Camera.h">
       <Filter>소스 파일\00.Engine\Component\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameCoding.rc">
@@ -239,6 +242,9 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>소스 파일\00.Engine\Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

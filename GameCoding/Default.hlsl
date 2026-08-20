@@ -27,11 +27,15 @@ SamplerState sampler0 : register(s0);
 
 // 이동을 위한 값을 CPU에서 받을 상수 버퍼를 b0 레지스터에 등록
 // cbuffer : GPU에서 사용할 상수 데이터를 담는 구조체
-cbuffer TransformData : register(b0)
+cbuffer CameraData : register(b0)
 {
-    row_major matrix matWorld;
     row_major matrix matView;
     row_major matrix matProjection;
+}
+
+cbuffer TransformData : register(b1)
+{
+    row_major matrix matWorld;
 }
 
 VS_OUTPUT VS(VS_INPUT input)
