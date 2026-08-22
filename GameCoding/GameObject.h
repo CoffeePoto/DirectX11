@@ -15,7 +15,7 @@ public:
 	void Start();
 
 	void Update();
-	void LateUpate();
+	void LateUpdate();
 	void FixedUpdate();
 	
 	shared_ptr<Component> GetFixedComponent(ComponentType type);

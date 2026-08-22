@@ -58,7 +58,7 @@ void GameObject::Update()
 	}
 }
 
-void GameObject::LateUpate()
+void GameObject::LateUpdate()
 {
 	for (shared_ptr<Component>& component : _components)
 	{

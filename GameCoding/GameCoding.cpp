@@ -28,8 +28,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // 2. 윈도우 창 생성
     if (!InitInstance(hInstance, nCmdShow)) return FALSE;
 
-    Game game;
-    game.Init(hWnd);
+    GGame->Init(hWnd);
 
     MSG msg = {};
 
@@ -43,8 +42,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         else
         {
-            game.Update();
-            game.Render();
+            GGame->Update();
+            GGame->Render();
         }
     }
 

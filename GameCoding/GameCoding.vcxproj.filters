@@ -67,6 +67,18 @@
     <Filter Include="소스 파일\00.Engine\Component\Rendering">
       <UniqueIdentifier>{272e34f0-992d-41b6-a310-e75dba156fca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\00.Engine\Manager">
+      <UniqueIdentifier>{3ec332c4-2162-4bf3-abf0-93459137fb43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00.Engine\Manager\Input">
+      <UniqueIdentifier>{35103243-5a7c-4fea-8beb-7f140a659ac8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00.Engine\Manager\Time">
+      <UniqueIdentifier>{ab02a009-949d-47e6-9a97-2ae149a7266b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00.Engine\Manager\Scene">
+      <UniqueIdentifier>{f2c95440-72ee-4e4d-a95f-093021b72c86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Types.h">
@@ -156,8 +168,14 @@
     <ClInclude Include="Camera.h">
       <Filter>소스 파일\00.Engine\Component\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>소스 파일\00.Engine\Manager\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>소스 파일\00.Engine\Manager\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="MeshRenderer.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\00.Engine\Component\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,8 +261,14 @@
     <ClCompile Include="Camera.cpp">
       <Filter>소스 파일\00.Engine\Component\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>소스 파일\00.Engine\Manager\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>소스 파일\00.Engine\Manager\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="MeshRenderer.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\00.Engine\Component\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
