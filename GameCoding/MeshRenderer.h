@@ -6,7 +6,7 @@ class MeshRenderer : public Component
 	using Super = Component;
 public:
 	MeshRenderer(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
-	~MeshRenderer();
+	virtual ~MeshRenderer();
 
 	virtual void Update() override;
 

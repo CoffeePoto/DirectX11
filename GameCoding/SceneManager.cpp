@@ -42,6 +42,7 @@ void SceneManager::LoadScene(wstring sceneName)
 shared_ptr<Scene> SceneManager::LoadTestScene()
 {
 	shared_ptr<Scene> scene = make_shared<Scene>();
+
 	//Camera
 	shared_ptr<GameObject> camera = make_shared<GameObject>(_graphics->GetDevice(), _graphics->GetDeviceContext());
 	{
