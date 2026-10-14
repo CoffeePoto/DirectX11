@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "MeshRenderer.h"
 #include "Mesh.h"
+#include "Animator.h"
 #include "ResourceManager.h"
 #include "Game.h"
 
@@ -64,10 +65,14 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		meshRenderer->SetMaterial(material);
 		auto mesh = RESOURCES->Get<Mesh>(L"Rectangle");
 		meshRenderer->SetMesh(mesh);
-
-		scene->AddGameObject(monster);
-		// ..
 	}
+	{
+		auto animator = make_shared<Animator>();
+		monster->AddComponent(animator);
+		auto anim = RESOURCES->Get<Animation>(L"BikingAnim");
+		animator->SetAnimation(anim);
+	}
+	scene->AddGameObject(monster);
 
 	return scene;
 }

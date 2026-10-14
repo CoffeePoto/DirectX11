@@ -22,9 +22,14 @@ void ResourceManager::Init()
 
 void ResourceManager::CreateDefaultTexture()
 {
+	//auto texture = make_shared<Texture>(_device);
+	//texture->SetName(L"Luffy");
+	//texture->Create(L"Images/Luffy.png");
+	//Add(texture->GetName(), texture);
+
 	auto texture = make_shared<Texture>(_device);
-	texture->SetName(L"Luffy");
-	texture->Create(L"Images/Luffy.png");
+	texture->SetName(L"Biking");
+	texture->Create(L"Images/Biking.jpg");
 	Add(texture->GetName(), texture);
 }
 
@@ -69,4 +74,16 @@ void ResourceManager::CreateDefaultMaterial()
 
 void ResourceManager::CreateDefaultAnimation()
 {
+	shared_ptr<Animation> animation = make_shared<Animation>();
+	animation->SetName(L"BikingAnim");
+	animation->SetTexture(Get<Texture>(L"Biking"));
+	animation->SetLoop(true);
+
+	animation->AddKeyframe(Keyframe{ Vec2{0.f, 0.f}, Vec2{1200.f, 1500.f}, 0.1f });
+	animation->AddKeyframe(Keyframe{ Vec2{1200.f, 0.f}, Vec2{1200.f, 1500.f}, 0.1f });
+	animation->AddKeyframe(Keyframe{ Vec2{2400.f, 0.f}, Vec2{1200.f, 1500.f}, 0.1f });
+	animation->AddKeyframe(Keyframe{ Vec2{3600.f, 0.f}, Vec2{1200.f, 1500.f}, 0.1f });
+	animation->AddKeyframe(Keyframe{ Vec2{4800.f, 0.f}, Vec2{1200.f, 1500.f}, 0.1f });
+
+	Add(animation->GetName(), animation);
 }
