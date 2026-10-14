@@ -1,6 +1,11 @@
 #pragma once
 #include "Component.h"
 
+class Mesh;
+class Material;
+#include "Material.h"
+#include "Shader.h"
+
 class MeshRenderer : public Component
 {
 	using Super = Component;
@@ -8,34 +13,29 @@ public:
 	MeshRenderer(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> deviceContext);
 	virtual ~MeshRenderer();
 
-	virtual void Update() override;
+	void SetMaterial(shared_ptr<Material> material) { _material = material; }
+	void SetShader(shared_ptr<Shader> shader) { _material->SetShader(shader); }
+	void SetMesh(shared_ptr<Mesh> mesh) { _mesh = mesh; }
+	void SetTexture(shared_ptr<Texture> texture) { _material->SetTexture(texture); }
+	
+	shared_ptr<Material> GetMaterial() { return _material; }
+	shared_ptr<VertexShader> GetVertexShader() { return GetMaterial()->GetShader()->GetVertexShader(); }
+	shared_ptr<InputLayout> GetInputLayout() { return GetMaterial()->GetShader()->GetInputLayout(); }
+	shared_ptr<PixelShader> GetPixelShader() { return GetMaterial()->GetShader()->GetPixelShader(); }
 
-	void Render(shared_ptr<Pipeline> pipeline);
+	shared_ptr<Mesh> GetMesh() { return _mesh; }
+	shared_ptr<Texture> GetTexture() { return _material->GetTexture(); }
 
 private:
 	ComPtr<ID3D11Device> _device;
 
+	friend class RenderManager;
+
 	//Mesh
-	shared_ptr<Geometry<VertexTextureData>> _geometry;
-	//shared_ptr<Geometry<VertexColorData>> _geometry;
-	shared_ptr<VertexBuffer> _vertexBuffer;
-	shared_ptr<IndexBuffer> _indexBuffer;
-
+	shared_ptr<Mesh> _mesh;
 	//Material
-	shared_ptr<InputLayout> _inputLayout;
-	shared_ptr<VertexShader> _vertexShader;
-	shared_ptr<RasterizerState> _rasterizerState;
-	shared_ptr<PixelShader> _pixelShader;
-	shared_ptr<Texture> _texture1;
-	shared_ptr<SamplerState> _samplerState;
-	shared_ptr<BlendState> _blendState;
+	shared_ptr<Material> _material;
 
-private:
-	//CBuffer
-	CameraData _cameraData;
-	shared_ptr<ConstantBuffer<CameraData>> _cameraBuffer;
-	TransformData _transformData;
-	shared_ptr<ConstantBuffer<TransformData>> _transformBuffer;
-
+	//shared_ptr<Texture> _texture1;
 };
 
