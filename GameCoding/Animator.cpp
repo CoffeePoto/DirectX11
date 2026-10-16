@@ -28,7 +28,7 @@ void Animator::Update()
 
 	if (_sumTime >= keyframe.time)
 	{
-		_currentKeyframeIndex++;
+		++_currentKeyframeIndex;
 		int32 totalCount = animation->GetKeyframeCount();
 		if (_currentKeyframeIndex >= totalCount)
 		{

@@ -28,8 +28,8 @@ void ResourceManager::CreateDefaultTexture()
 	//Add(texture->GetName(), texture);
 
 	auto texture = make_shared<Texture>(_device);
-	texture->SetName(L"Biking");
-	texture->Create(L"Images/Biking.jpg");
+	texture->SetName(L"Snake");
+	texture->Create(L"Images/Snake.bmp");
 	Add(texture->GetName(), texture);
 }
 
@@ -68,22 +68,27 @@ void ResourceManager::CreateDefaultMaterial()
 	shared_ptr<Material> material = make_shared<Material>();
 	material->SetName(L"Default");
 	material->SetShader(Get<Shader>(L"Default"));
-	material->SetTexture(Get<Texture>(L"Luffy"));
+	material->SetTexture(Get<Texture>(L"Snake"));
 	Add(material->GetName(), material);
 }
 
 void ResourceManager::CreateDefaultAnimation()
 {
 	shared_ptr<Animation> animation = make_shared<Animation>();
-	animation->SetName(L"BikingAnim");
-	animation->SetTexture(Get<Texture>(L"Biking"));
+	animation->SetName(L"SnakeAnim");
+	animation->SetTexture(Get<Texture>(L"Snake"));
 	animation->SetLoop(true);
 
-	animation->AddKeyframe(Keyframe{ Vec2{0.f, 0.f}, Vec2{1200.f, 1500.f}, 0.1f });
-	animation->AddKeyframe(Keyframe{ Vec2{1200.f, 0.f}, Vec2{1200.f, 1500.f}, 0.1f });
-	animation->AddKeyframe(Keyframe{ Vec2{2400.f, 0.f}, Vec2{1200.f, 1500.f}, 0.1f });
-	animation->AddKeyframe(Keyframe{ Vec2{3600.f, 0.f}, Vec2{1200.f, 1500.f}, 0.1f });
-	animation->AddKeyframe(Keyframe{ Vec2{4800.f, 0.f}, Vec2{1200.f, 1500.f}, 0.1f });
+	animation->AddKeyframe(Keyframe{ Vec2{0.f, 0.f}, Vec2{100.f, 100.f}, 0.1f });
+	animation->AddKeyframe(Keyframe{ Vec2{100.f, 0.f}, Vec2{100.f, 100.f}, 0.1f });
+	animation->AddKeyframe(Keyframe{ Vec2{200.f, 0.f}, Vec2{100.f, 100.f}, 0.1f });
+	animation->AddKeyframe(Keyframe{ Vec2{300.f, 0.f}, Vec2{100.f, 100.f}, 0.1f });
 
 	Add(animation->GetName(), animation);
+
+	//XML + JSON
+	animation->Save(L"XMLFiles/TestAnim.xml");
+
+	shared_ptr<Animation> anim2 = make_shared<Animation>();
+	animation->Load(L"XMLFiles/TestAnim.xml");
 }

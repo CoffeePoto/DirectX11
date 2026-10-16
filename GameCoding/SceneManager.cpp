@@ -58,6 +58,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//GameObject
 	shared_ptr<GameObject> monster = make_shared<GameObject>(_graphics->GetDevice(), _graphics->GetDeviceContext());
 	{
+		//meshrenderer, material, mesh component 추가
 		monster->GetorAddTransform();
 		auto meshRenderer = make_shared<MeshRenderer>(_graphics->GetDevice(), _graphics->GetDeviceContext());
 		monster->AddComponent(meshRenderer);
@@ -67,9 +68,10 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		meshRenderer->SetMesh(mesh);
 	}
 	{
+		//animation component 추가
 		auto animator = make_shared<Animator>();
 		monster->AddComponent(animator);
-		auto anim = RESOURCES->Get<Animation>(L"BikingAnim");
+		auto anim = RESOURCES->Get<Animation>(L"SnakeAnim");
 		animator->SetAnimation(anim);
 	}
 	scene->AddGameObject(monster);
