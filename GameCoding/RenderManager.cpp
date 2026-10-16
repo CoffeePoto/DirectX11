@@ -144,7 +144,6 @@ void RenderManager::RenderObjects()
 		_pipeline->SetConstantBuffer(0, SS_VertexShader, _cameraBuffer);
 		_pipeline->SetConstantBuffer(1, SS_VertexShader, _transformBuffer);
 		//PS
-		//_pipeline->SetTexture(0, SS_PixelShader, meshRenderer->GetTexture());
 		_pipeline->SetSamplerState(0, SS_PixelShader, _samplerState);
 
 		//OM
